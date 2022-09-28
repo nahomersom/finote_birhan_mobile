@@ -1,0 +1,1 @@
+const double kElevation = 0;
