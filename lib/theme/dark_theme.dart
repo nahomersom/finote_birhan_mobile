@@ -8,6 +8,12 @@ ThemeData darkTheme(){
   return ThemeData(
    primaryColor: kDarkThemePrimaryColor,
    fontFamily: 'Hind',
+
+   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+   selectedItemColor: Colors.white,
+   unselectedItemColor: Colors.grey,
+   backgroundColor: kDarkThemePrimaryColor
+   ),
    appBarTheme: const AppBarTheme(
      color: kDarkThemePrimaryColor,
      elevation: kElevation,
