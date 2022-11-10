@@ -1,9 +1,12 @@
-import 'package:finote_birhan_mobile/Screens/splash.dart';
-import 'package:finote_birhan_mobile/helper/router_helper.dart';
 import 'package:finote_birhan_mobile/theme/dark_theme.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+import 'helpers/router_helper.dart';
+
+Future main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 

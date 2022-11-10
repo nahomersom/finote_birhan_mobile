@@ -1,11 +1,9 @@
 import 'dart:async';
-
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:finote_birhan_mobile/constants/string.dart';
-import 'package:finote_birhan_mobile/helper/router_helper.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/styles.dart';
+import '../helpers/router_helper.dart';
 
 class SplashScreen extends StatefulWidget{
   const SplashScreen({Key? key}) : super(key: key);

@@ -1,10 +1,23 @@
-import 'package:finote_birhan_mobile/Pages/home_page.dart';
-import 'package:finote_birhan_mobile/Pages/mezmur_page.dart';
-import 'package:finote_birhan_mobile/Pages/search_page.dart';
-import 'package:finote_birhan_mobile/Pages/wereb_page.dart';
+
+import 'package:finote_birhan_mobile/blocs/recommendationBloc/recommendation_event.dart';
+import 'package:finote_birhan_mobile/blocs/zemarianBloc/zemarian_bloc.dart';
+import 'package:finote_birhan_mobile/repository/mezmurs_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import '../blocs/WerebCategoryBloc/wereb_category_bloc.dart';
+import '../blocs/WerebCategoryBloc/wereb_category_event.dart';
+import '../blocs/mezmursCategoyBloc/mezmurs_category_bloc.dart';
+import '../blocs/mezmursCategoyBloc/mezmurs_category_event.dart';
+import '../blocs/recommendationBloc/recommendation_bloc.dart';
+import '../blocs/zemarianBloc/zemarian_event.dart';
+import '../repository/services/mezmurs_service.dart';
+import 'Pages/Home/home_page.dart';
+import 'Pages/mezmur_page.dart';
+import 'Pages/search_page.dart';
+import 'Pages/wereb_page.dart';
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -12,6 +25,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
+
   List<Widget> pages = [
     const HomePage(),
     const MezmurPage(),
@@ -19,46 +33,108 @@ class _HomeScreenState extends State<HomeScreen> {
     const SearchPage(),
 
   ];
+
   @override
   Widget build(BuildContext context) {
 
-    return  Scaffold(
+    return  RepositoryProvider(
 
-      body: IndexedStack(
-        index: _currentIndex,
-        children: pages,
+      create: (context)=> MezmursRepository(mezmursService: MezmursService()),
+      child:MultiBlocProvider(
+        providers: [
+      BlocProvider<RecommendationMezmurBloc>(
+      create: (context)=>RecommendationMezmurBloc(
+    mezmursRepository: context.read<MezmursRepository>(),
+
+    )..add(GetRecommended()
+
+    ),
       ),
-      bottomNavigationBar:BottomNavigationBar(
+          BlocProvider<MezmursCategoryBloc>(
+            create: (context)=>MezmursCategoryBloc(
+              mezmursRepository: context.read<MezmursRepository>(),
 
-        currentIndex: _currentIndex,
-        type: BottomNavigationBarType.fixed,
-        iconSize: 35,
-        onTap: (index)=>{
-          setState((){
-            _currentIndex = index;
-          })
-
-        },
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
-              activeIcon: Icon(Icons.home),
-              label:'መግቢያ'
+            )..add(GetMezmursCategory()),
           ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.my_library_books),
-              activeIcon: Icon(Icons.menu_book_sharp),
+          BlocProvider<WerebCategoryBloc>(
+            create: (context)=>WerebCategoryBloc(
+              mezmursRepository: context.read<MezmursRepository>(),
 
-              label:'መዝሙር'),
-          BottomNavigationBarItem(icon: Icon(Icons.home),label:'ወረብ'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.search_outlined),
-              activeIcon: Icon(Icons.search),
-              label:'ፈልግ')
+            )..add(GetWerebCategory()),
+          ),
+          BlocProvider<ZemarainBloc>(
+            create: (context)=>ZemarainBloc(
+              zemarianRepository: context.read<MezmursRepository>(),
+
+            )..add(GetZemarian()),
+          ),
         ],
 
-      )
 
+
+
+
+        child: Scaffold(
+
+          body: IndexedStack(
+            index: _currentIndex,
+            children: pages,
+          ),
+          bottomNavigationBar:BottomNavigationBar(
+
+            currentIndex: _currentIndex,
+            type: BottomNavigationBarType.fixed,
+            iconSize: 35,
+            onTap: (index)=>{
+              setState((){
+                _currentIndex = index;
+              })
+
+            },
+            items:  [
+              const BottomNavigationBarItem(
+                  icon: Icon(Icons.home_outlined),
+                  activeIcon: Icon(Icons.home),
+                  label:'መግቢያ'
+              ),
+              const BottomNavigationBarItem(
+                  icon: Icon(Icons.my_library_books),
+                  activeIcon: Icon(Icons.menu_book_sharp),
+
+                  label:'መዝሙር'),
+              BottomNavigationBarItem(
+                  icon: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 33.0,
+                        top:8
+                    ),
+                    child: SvgPicture.asset(
+                      'assets/icons/Tsenanesel.svg',
+                      height: 32,
+                      color: Colors.grey,
+                      ),
+                  ),
+                  activeIcon:
+                    Padding(
+                      padding: const EdgeInsets.only(top:5.0),
+                      child: SvgPicture.asset(
+                        'assets/icons/mekomiya.svg',
+                        height: 28,
+
+                  ),
+                    ),
+                  label:'ወረብ'
+              ),
+              const BottomNavigationBarItem(
+                  icon: Icon(Icons.search_outlined),
+                  activeIcon: Icon(Icons.search),
+                  label:'ፈልግ')
+            ],
+
+          )
+
+        ),
+      ),
     );
   }
 }
