@@ -18,7 +18,7 @@ ThemeData darkTheme(){
      color: kDarkThemePrimaryColor,
      elevation: Dimensions.kElevation,
      systemOverlayStyle: SystemUiOverlayStyle(
-       statusBarColor: kDarkThemePrimaryColor
+       statusBarColor: Colors.transparent
      )
    ),
   scaffoldBackgroundColor: kDarkThemeSecondaryColor,

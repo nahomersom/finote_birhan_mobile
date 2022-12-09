@@ -1,8 +1,8 @@
 
-class RecommendedModel{
+class MezmurModel{
 final String body,category,mezmurUrl,title,zemari,imageUrl;
 final List<dynamic> type;
-RecommendedModel({
+MezmurModel({
   required this.body,
   required this.category,
   required this.mezmurUrl,
@@ -12,8 +12,8 @@ RecommendedModel({
   required this.imageUrl
 
 });
-factory RecommendedModel.fromJSON(Map<String,dynamic> json){
-  return RecommendedModel(
+factory MezmurModel.fromJSON(Map<String,dynamic> json){
+  return MezmurModel(
       body: json["body"] as String,
       category: json["category"] as String,
       mezmurUrl: json["mezmurUrl"] as String,

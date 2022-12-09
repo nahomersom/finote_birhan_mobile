@@ -5,8 +5,8 @@ import '../models/category.dart';
 import '../models/recomended.dart';
 dynamic instance = FirebaseFirestore.instance;
 class MezmursService{
-Future<List<RecommendedModel>> getRecommendedMezmurs([bool loadCachedData = false]) async {
-  List<RecommendedModel> recommendedList=[];
+Future<List<MezmurModel>> getRecommendedMezmurs([bool loadCachedData = false]) async {
+  List<MezmurModel> recommendedList=[];
    dynamic recommend;
   try{
     if(loadCachedData){
@@ -17,7 +17,7 @@ Future<List<RecommendedModel>> getRecommendedMezmurs([bool loadCachedData = fals
     }
 
     recommend.docs.forEach((element) {
-      return recommendedList.add(RecommendedModel.fromJSON(element.data()));
+      return recommendedList.add(MezmurModel.fromJSON(element.data()));
     });
 
     return recommendedList;

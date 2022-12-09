@@ -6,7 +6,6 @@ import 'package:finote_birhan_mobile/blocs/mezmursCategoyBloc/mezmurs_category_b
 import 'package:finote_birhan_mobile/blocs/mezmursCategoyBloc/mezmurs_category_event.dart';
 import 'package:finote_birhan_mobile/blocs/mezmursCategoyBloc/mezmurs_category_state.dart';
 import 'package:finote_birhan_mobile/blocs/recommendationBloc/recommendation_bloc.dart';
-import 'package:finote_birhan_mobile/blocs/recommendationBloc/recommendation_state.dart';
 import 'package:finote_birhan_mobile/blocs/zemarianBloc/zemarian_bloc.dart';
 import 'package:finote_birhan_mobile/blocs/zemarianBloc/zemarian_event.dart';
 import 'package:finote_birhan_mobile/blocs/zemarianBloc/zemarian_state.dart';
@@ -57,22 +56,20 @@ class HomePage extends StatelessWidget {
              BlocBuilder<RecommendationMezmurBloc,RecommendationState>(
 
                 builder: (context,state) {
-                  if(state is LoadingState){
-                    List<RecommendedModel>? recommendedMezmur = state.recommended;
-                    return WektawiMezmurCard(recommended: recommendedMezmur);
-                  }
-                  if (state is LoadedState) {
-                    List<RecommendedModel> recommendedMezmur = state.recommended;
-                    return WektawiMezmurCard(recommended: recommendedMezmur);
-                  }
-                  if(state is ErrorState){
-                    return const Center(
-                      child: Text('error'),
-                    );
-                  }
-                  return Container();
+                  return state.status.isLoading ?
+
+                  WektawiMezmurCard(recommended: state.recommended) :
+
+                  state.status.isSuccess ?
+                  WektawiMezmurCard(recommended: state.recommended) :
+                  state.status.hasError ?
+
+                  const Center(
+                    child: Text('error'),
+                  ) : Container();
                 }
-                ),
+                  ),
+
 
              const ContentTitle(text: 'መዝሙሮች'),
               BlocBuilder<MezmursCategoryBloc,MezmursCategoryState>(
@@ -86,7 +83,7 @@ class HomePage extends StatelessWidget {
                       List<CategoryModel> mezmursCategory = state.mezmursCategory;
                       return TinyCard(category: mezmursCategory);
                     }
-                    if(state is ErrorState){
+                    if(state is ErrorMezmurCategoryState){
                       return const Center(
                         child: Text('error'),
                       );
@@ -121,7 +118,7 @@ class HomePage extends StatelessWidget {
                       List<CategoryModel> mezmursCategory = state.werebCategory;
                       return TinyCard(category: mezmursCategory);
                     }
-                    if(state is ErrorState){
+                    if(state is ErrorWerebCategoryState){
                       return const Center(
                         child: Text('error'),
                       );

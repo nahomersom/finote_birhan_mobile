@@ -7,7 +7,7 @@ class MezmursRepository{
   final MezmursService mezmursService;
 
   MezmursRepository({required this.mezmursService});
-  Future<List<RecommendedModel>> getMezmurs([bool loadCachedData = false]) => mezmursService.getRecommendedMezmurs(loadCachedData);
+  Future<List<MezmurModel>> getMezmurs([bool loadCachedData = false]) => mezmursService.getRecommendedMezmurs(loadCachedData);
   Future<List<CategoryModel>> getMezmursCategory([bool loadCachedData = false]) => mezmursService.getMezmursCategory(loadCachedData);
   Future<List<ZemarianModel>> getZemarians([bool loadCachedData = false]) => mezmursService.getZemarian(loadCachedData);
   Future<List<CategoryModel>> getWerebCategory([bool loadCachedData = false]) => mezmursService.getWerebCategory(loadCachedData);

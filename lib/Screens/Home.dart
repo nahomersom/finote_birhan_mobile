@@ -1,4 +1,6 @@
 
+import 'package:finote_birhan_mobile/blocs/PlayerBackgroundColorCubit/backgroundCubit.dart';
+import 'package:finote_birhan_mobile/blocs/mezmurPlayerBloc/mezmur_player_bloc.dart';
 import 'package:finote_birhan_mobile/blocs/recommendationBloc/recommendation_event.dart';
 import 'package:finote_birhan_mobile/blocs/zemarianBloc/zemarian_bloc.dart';
 import 'package:finote_birhan_mobile/repository/mezmurs_repository.dart';
@@ -67,14 +69,12 @@ class _HomeScreenState extends State<HomeScreen> {
               zemarianRepository: context.read<MezmursRepository>(),
 
             )..add(GetZemarian()),
+
           ),
+
         ],
 
-
-
-
-
-        child: Scaffold(
+     child: Scaffold(
 
           body: IndexedStack(
             index: _currentIndex,

@@ -7,4 +7,6 @@ class Dimensions{
   static const double kCardHorizontalSpace = 10;
   static const double kSizedBoxHeight = 6.0;
   static const double kCardSpace = 10.0;
+  static const double kPlayerVerticalPadding = 35;
+  static const double kPlayerHorizontalPadding = 20;
 }
