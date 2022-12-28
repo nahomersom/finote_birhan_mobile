@@ -19,16 +19,35 @@ class MezmurPlayer extends StatefulWidget {
   State<MezmurPlayer> createState() => _MezmurPlayerState();
 }
 
-class _MezmurPlayerState extends State<MezmurPlayer> {
+class _MezmurPlayerState extends State<MezmurPlayer> with TickerProviderStateMixin{
   bool _isLyricsVisible = false;
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
+
     return BlocBuilder<BackgroundColorCubit,BackgroundColor>(
       builder: (context,state){
         return Scaffold(
+
           body:  Stack(
               children:[
                 Container(
@@ -65,7 +84,7 @@ class _MezmurPlayerState extends State<MezmurPlayer> {
                         ),
                         const SizedBox(height: 20),
                         Padding(
-                          padding: const EdgeInsets.all(15),
+                          padding: const EdgeInsets.symmetric(horizontal: 3,vertical: 15),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,133 +137,153 @@ class _MezmurPlayerState extends State<MezmurPlayer> {
                   ),
 
                 ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child:Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
 
-                    child: GestureDetector(
-                      onTap: ()=> setState(() {
-                        _isLyricsVisible = !_isLyricsVisible;
-                      }),
-                      child: Container(
 
-                        height: 45,
-                        decoration:   BoxDecoration(
-                            color: TinyColor.fromColor(state.initialBackgroundColor).lighten(20).color,
-                            borderRadius: const BorderRadius.only(
-                                topRight: Radius.circular(10),
-                                topLeft: Radius.circular(10)
-                            )
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-             Column(
-                    children:[
-                      // AnimatedOpacity(
-                      //
-                      //   duration: const Duration(milliseconds: 600),
-                      //   opacity: _isLyricsVisible ? 1 : 0,
-                      //   child: Container(
-                      //
-                      //     color: TinyColor.fromColor(state.initialBackgroundColor).lighten(20).color,
-                      //     height: screenHeight * 0.16,
-                      //     child: Column(
-                      //       children: [
-                      //         Padding(
-                      //           padding: const EdgeInsets.all(30.0),
-                      //           child: Row(
-                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //             children:  [
-                      //
-                      //               IconButton(
-                      //                   onPressed: ()=>setState(() {
-                      //                     _isLyricsVisible = !_isLyricsVisible;
-                      //                   }),
-                      //                   icon: const Icon(
-                      //                     Icons.arrow_drop_down_circle,
-                      //                     color: kDarkThemePrimaryColor,
-                      //                     size: 35,
-                      //                   )),
-                      //               Column(
-                      //                 children: [
-                      //                   Text(widget._mezmur.title,
-                      //                       style: kPlayerCategoryTextStyle.copyWith(
-                      //                           fontWeight: FontWeight.bold
-                      //                       )
-                      //                   ),
-                      //                   const SizedBox(height: 2),
-                      //                   Text(widget._mezmur.zemari,
-                      //                       style: kPlayerCategoryTextStyle.copyWith(
-                      //                           fontWeight: FontWeight.bold
-                      //                       )
-                      //                   ),
-                      //                 ],
-                      //               ),
-                      //               const Icon(Icons.category)
-                      //             ],
-                      //           ),
-                      //         )
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
-                      AnimatedOpacity(
 
-                        duration: const Duration(microseconds: 500),
-                        opacity: _isLyricsVisible ? 1 : 0,
-                        child: Container(
+                Positioned.fill(
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
 
-                          color: TinyColor.fromColor(state.initialBackgroundColor).lighten(20).color,
-                          height: screenHeight * 0.84,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
 
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(30.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children:  [
 
-                                    IconButton(
-                                        onPressed: ()=>setState(() {
-                                          _isLyricsVisible = !_isLyricsVisible;
-                                        }),
-                                        icon: const Icon(
-                                          Icons.arrow_drop_down_circle,
-                                          color: kDarkThemePrimaryColor,
-                                          size: 35,
-                                        )),
-                                    Column(
-                                      children: [
-                                        Text(widget._mezmur.title,
-                                            style: kPlayerCategoryTextStyle.copyWith(
-                                                fontWeight: FontWeight.bold
-                                            )
-                                        ),
-                                        const SizedBox(height: 2),
-                                        Text(widget._mezmur.zemari,
-                                            style: kPlayerCategoryTextStyle.copyWith(
-                                                fontWeight: FontWeight.bold
-                                            )
-                                        ),
-                                      ],
-                                    ),
-                                    const Icon(Icons.category)
-                                  ],
+                            child: GestureDetector(
+                              onTap: ()=> setState(() {
+                                _isLyricsVisible = !_isLyricsVisible;
+                                _controller.forward();
+                              }),
+                              child: Container(
+
+                                height: 40,
+                                decoration:   BoxDecoration(
+                                    color: TinyColor.fromColor(state.initialBackgroundColor).lighten(20).color,
+                                    borderRadius: const BorderRadius.only(
+                                        topRight: Radius.circular(5),
+                                        topLeft: Radius.circular(5)
+                                    )
                                 ),
-                              )
-                            ],
+                                child:const Center(
+                                   child: Text('ግጥም',style: kPlayerCategoryTextStyle,),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-
-                    ]
-                  ),
+                ),
 
 
+
+
+
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children:[
+                        SizeTransition(
+                          sizeFactor: _controller,
+                          child: Container(
+
+                            color: TinyColor.fromColor(state.initialBackgroundColor).lighten(20).color,
+                            height: screenHeight * 0.16,
+
+
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children:  [
+
+                                      IconButton(
+                                          onPressed: ()=>setState(() {
+                                            _isLyricsVisible = !_isLyricsVisible;
+                                            _controller.reverse();
+
+                                          }),
+                                          icon: const Icon(
+                                            Icons.arrow_drop_down_circle,
+                                            color: kDarkThemePrimaryColor,
+                                            size: 35,
+                                          )),
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            Text(widget._mezmur.title,
+                                                style: kPlayerCategoryTextStyle.copyWith(
+                                                    fontWeight: FontWeight.bold
+                                                )
+                                            ),
+                                            const SizedBox(height: 2),
+                                            Text(widget._mezmur.zemari,
+                                                style: kPlayerCategoryTextStyle.copyWith(
+                                                    fontWeight: FontWeight.bold
+                                                )
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const Icon(Icons.category)
+                                    ],
+                                  ),
+                                ),
+
+                              ],
+                            ),
+                          ),
+
+                        ),
+                        SizeTransition(
+                          sizeFactor: _controller,
+                          child: Container(
+
+                            color: TinyColor.fromColor(state.initialBackgroundColor).lighten(20).color,
+                            height: screenHeight * 0.84,
+                            width: screenWidth,
+                            child:Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 30),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children:  [
+                                  Expanded(
+                                      flex:3,
+                                      child:SingleChildScrollView(
+                                          child: Text(
+                                             widget._mezmur.body,
+                                            style: TextStyle(
+                                                color: Colors.grey[800],
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 30                                            ),
+                                          )
+                                      )
+                                  ),
+                                  Expanded(
+                                    child: Container(
+
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                          color: TinyColor.fromColor(state.initialBackgroundColor).lighten(20).color,
+                                          border: Border.all(style: BorderStyle.none),
+                                          boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.shade600,
+
+
+                                          )
+                                        ]
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )
+
+
+                          ),
+
+                        ),
+                      ]
+                    ),
 
               ]
 

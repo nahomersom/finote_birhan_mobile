@@ -5,23 +5,20 @@ import '../models/category.dart';
 import '../models/recomended.dart';
 dynamic instance = FirebaseFirestore.instance;
 class MezmursService{
-Future<List<MezmurModel>> getRecommendedMezmurs([bool loadCachedData = false]) async {
+Future<List<MezmurModel>> getRecommendedMezmurs() async {
   List<MezmurModel> recommendedList=[];
    dynamic recommend;
   try{
-    if(loadCachedData){
-       recommend = await instance.collection("mezmurs").get(const GetOptions(source: Source.cache));
-    }else {
        recommend = await instance.collection("mezmurs")
           .get();
-    }
-
     recommend.docs.forEach((element) {
       return recommendedList.add(MezmurModel.fromJSON(element.data()));
     });
 
     return recommendedList;
-  }on FirebaseException catch(e){
+  }
+
+  on FirebaseException catch(e){
     if (kDebugMode) {
       print('firebase problem ${e.code} and with message ${e.message}');
     }

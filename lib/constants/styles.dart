@@ -11,7 +11,7 @@ const kSplashScreenTextStyle = TextStyle(
 const kPlayerCategoryTextStyle =  TextStyle(
     decoration: TextDecoration.none,
     color: kDarkThemeTertiaryColor,
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: 'jiret',
-    fontWeight: FontWeight.w100
+    fontWeight: FontWeight.bold
 );

@@ -29,15 +29,19 @@ class HomePage extends StatelessWidget {
 
       appBar: AppBar(
 
-        leading:  Center(child: Padding(
-          padding: const EdgeInsets.only(left: 12),
-          child: Text('ፍኖተ ብርሀን',style: _textTheme.headline6?.copyWith(
-            fontWeight: FontWeight.bold
+        leading:  Center(
+
+          child: Padding(
+            padding:const EdgeInsets.symmetric(horizontal: 5),
+            child: Text('ፍኖተ ብርሀን',style: _textTheme.headline6?.copyWith(
+              fontWeight: FontWeight.bold,
+              fontSize: 18
+            )
+        ),
           )),
-        )),
 
 
-        leadingWidth: 500,
+        leadingWidth: 300,
       ),
       body:  RefreshIndicator(
         onRefresh: () async{

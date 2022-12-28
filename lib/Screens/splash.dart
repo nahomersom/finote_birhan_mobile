@@ -1,9 +1,21 @@
 import 'dart:async';
 import 'package:finote_birhan_mobile/constants/string.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../blocs/PlayerBackgroundColorCubit/backgroundCubit.dart';
+import '../blocs/WerebCategoryBloc/wereb_category_bloc.dart';
+import '../blocs/WerebCategoryBloc/wereb_category_event.dart';
+import '../blocs/mezmursCategoyBloc/mezmurs_category_bloc.dart';
+import '../blocs/mezmursCategoyBloc/mezmurs_category_event.dart';
+import '../blocs/recommendationBloc/recommendation_bloc.dart';
+import '../blocs/recommendationBloc/recommendation_event.dart';
+import '../blocs/zemarianBloc/zemarian_bloc.dart';
+import '../blocs/zemarianBloc/zemarian_event.dart';
 import '../constants/styles.dart';
 import '../helpers/router_helper.dart';
+import '../repository/mezmurs_repository.dart';
+import '../repository/services/mezmurs_service.dart';
 
 class SplashScreen extends StatefulWidget{
   const SplashScreen({Key? key}) : super(key: key);
@@ -19,9 +31,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   void initState() {
     // TODO: implement initState
     super.initState();
-    Timer(const Duration(seconds: 3), (){
-      Navigator.pushReplacementNamed(context, RouteHelper.home);
-    });
+    // Timer(const Duration(seconds: 3), (){
+    //   Navigator.pushReplacementNamed(context, RouteHelper.home);
+    // });
     _controller = AnimationController(
       duration: const Duration(seconds:  3),
       vsync: this,
@@ -41,8 +53,43 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   }
   @override
   Widget build(BuildContext context){
+    return RepositoryProvider(
 
-    return Scaffold(
+      create: (context)=> MezmursRepository(mezmursService: MezmursService()),
+      child:MultiBlocProvider(
+          providers: [
+            BlocProvider<BackgroundColorCubit>(create:(_)=>BackgroundColorCubit(),),
+            BlocProvider<RecommendationMezmurBloc>(
+              create: (context)=>RecommendationMezmurBloc(
+                mezmursRepository: context.read<MezmursRepository>(),
+
+              )..add(GetRecommended()
+
+              ),
+            ),
+            BlocProvider<MezmursCategoryBloc>(
+              create: (context)=>MezmursCategoryBloc(
+                mezmursRepository: context.read<MezmursRepository>(),
+
+              )..add(GetMezmursCategory()),
+            ),
+            BlocProvider<WerebCategoryBloc>(
+              create: (context)=>WerebCategoryBloc(
+                mezmursRepository: context.read<MezmursRepository>(),
+
+              )..add(GetWerebCategory()),
+            ),
+            BlocProvider<ZemarainBloc>(
+              create: (context)=>ZemarainBloc(
+                zemarianRepository: context.read<MezmursRepository>(),
+
+              )..add(GetZemarian()),
+
+            ),
+
+          ],
+
+          child:Scaffold(
       body:  Center(
         child:FadeTransition(
         opacity: _animation,
@@ -51,6 +98,8 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                  )
         ),
    ),
+    ),
+    )
       );
 
   }

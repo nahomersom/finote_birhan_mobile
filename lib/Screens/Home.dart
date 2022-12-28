@@ -1,6 +1,5 @@
 
-import 'package:finote_birhan_mobile/blocs/PlayerBackgroundColorCubit/backgroundCubit.dart';
-import 'package:finote_birhan_mobile/blocs/mezmurPlayerBloc/mezmur_player_bloc.dart';
+
 import 'package:finote_birhan_mobile/blocs/recommendationBloc/recommendation_event.dart';
 import 'package:finote_birhan_mobile/blocs/zemarianBloc/zemarian_bloc.dart';
 import 'package:finote_birhan_mobile/repository/mezmurs_repository.dart';
@@ -39,42 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
 
-    return  RepositoryProvider(
-
-      create: (context)=> MezmursRepository(mezmursService: MezmursService()),
-      child:MultiBlocProvider(
-        providers: [
-      BlocProvider<RecommendationMezmurBloc>(
-      create: (context)=>RecommendationMezmurBloc(
-    mezmursRepository: context.read<MezmursRepository>(),
-
-    )..add(GetRecommended()
-
-    ),
-      ),
-          BlocProvider<MezmursCategoryBloc>(
-            create: (context)=>MezmursCategoryBloc(
-              mezmursRepository: context.read<MezmursRepository>(),
-
-            )..add(GetMezmursCategory()),
-          ),
-          BlocProvider<WerebCategoryBloc>(
-            create: (context)=>WerebCategoryBloc(
-              mezmursRepository: context.read<MezmursRepository>(),
-
-            )..add(GetWerebCategory()),
-          ),
-          BlocProvider<ZemarainBloc>(
-            create: (context)=>ZemarainBloc(
-              zemarianRepository: context.read<MezmursRepository>(),
-
-            )..add(GetZemarian()),
-
-          ),
-
-        ],
-
-     child: Scaffold(
+    return  Scaffold(
 
           body: IndexedStack(
             index: _currentIndex,
@@ -131,10 +95,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   label:'ፈልግ')
             ],
 
-          )
+          ),
 
-        ),
-      ),
-    );
+        );
+
   }
 }

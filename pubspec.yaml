@@ -48,6 +48,7 @@ dependencies:
   line_icons: ^2.0.1
   palette_generator: ^0.3.3
   tinycolor2: ^2.1.0
+  connectivity_plus: ^2.3.9
 
 dev_dependencies:
   flutter_test:
